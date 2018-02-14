@@ -58,10 +58,12 @@ class Network:
             data, addr = self.listen_socket.recvfrom(self.max_packet_length)
             # TODO: create Message wrapper class from data and append to unreads if there's space for it
         
-    def broadcast(self):
+    def broadcast(self, message):
+        #TODO: broadcast the passed message to the address 255.255.255.255
         pass
 
     def close_broadcast(self):
+        #TODO: close self.broadcast_socket
         pass
         
 

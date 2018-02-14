@@ -1,4 +1,5 @@
 import datetime
+import re
 
 
 class Message:
@@ -17,7 +18,9 @@ class Message:
             self.content += "<time_stamp>" + self.timestamp_str + "</time_stamp>"
         self.content += "<signature>" + str(self.addr_from) + "</signature>"
 
-    def find_value(self, key):
+    def find_values(self, key, attributes=None):
+        #TODO find and return all of the values that match the given key and attributes
+        #hint, use re
         pass
 
     def __str__(self):
