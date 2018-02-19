@@ -59,13 +59,26 @@ class Network:
             # TODO: create Message wrapper class from data and append to unreads if there's space for it
         
     def broadcast(self, message):
-        #TODO: broadcast the passed message to the address 255.255.255.255
+        #TODO:  broadcast the passed message to the address 255.255.255.255
         pass
 
     def close_broadcast(self):
         #TODO: close self.broadcast_socket
         pass
-        
+
+    def read(self, num_msgs=1):
+        """
+        Return a list containing the first num_msgs messages from unreads
+        and move them to logged_messages (moving the oldest messages out of
+        logged_messages)
+        :param num_msgs: Number of messages to read
+        :return: list<Message> containing the oldest unread messages
+
+        """
+        r = self.unreads[:num_msgs]
+        self.unreads = self.unreads[len(r):]
+
+
 
 if __name__ == "__main__":
     main()
