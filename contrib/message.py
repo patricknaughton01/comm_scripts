@@ -1,39 +1,33 @@
-import datetime
 import re
+
+from helpers.helpers import remove_spaces
+
+
+def main():
+    message = Message("<to attribute =' value'>192.168.1.2</to>"
+                      "<from>192.168.1.3</from>"
+                      "<time_stamp>2018_2_18_0_0_0_0</time_stamp>")
+    message.find_values("to", "attribute")
 
 
 class Message:
-    def __init__(self, addr_to, addr_from, content, timestamp=False, sign=False):
-        self.addr_to = addr_to
-        self.addr_from = addr_from
+    def __init__(self, content):
         self.content = content
-        self.content += "<to>" + str(self.addr_to) + "</to>"
-        self.content += "<from>" + str(self.addr_from) + "</from>"
-        if timestamp:
-            self.timestamp = datetime.datetime.now()
-            self.timestamp_str = (str(self.timestamp.year)
-                                  + "_" + str(self.timestamp.month)
-                                  + "_" + str(self.timestamp.day)
-                                  + "_" + str(self.timestamp.hour)
-                                  + "_" + str(self.timestamp.minute)
-                                  + "_" + str(self.timestamp.second))
-            self.content += "<time_stamp>" + self.timestamp_str + "</time_stamp>"
-        if sign:
-            self.content += "<signature>" + str(self.addr_from) + "</signature>"
-
-    def add_timestamp(self, content):
-        pass
-
-    def add_signature(self, content):
-        pass
-
-    def convert_to_message(self, xml_string):
-        pass
 
     def find_values(self, key, attributes=None):
-        #TODO find and return all of the values that match the given key and attributes
-        #hint, use re
-        pass
+        if attributes is None:
+            values = re.findall(r"<" + key + ">(.*?)</" + key + ">", self.content)
+            return values
+        else:
+            potentials = {}
+            key_vals = re.findall(r"<" + key + "(.*?>.*?)</" + key + ">", self.content)
+            for i in range(len(key_vals)):
+                key_vals[i] = remove_spaces(key_vals[i])
+            print(key_vals)
 
     def __str__(self):
         return self.content
+
+
+if __name__ == "__main__":
+    main()
