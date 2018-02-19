@@ -15,10 +15,28 @@ def main():
 
 
 class Message:
+    """Wrapper class for sending messages as strings over
+    a network.
+
+    """
     def __init__(self, content):
+        """
+        Initialize the message with content
+        :param content: String representing message's content
+
+        """
         self.content = content
 
     def find_values(self, key, attributes=None):
+        """
+        Find and return values in `self.content` that are wrapped by the key
+        `key`. If attributes is specified, only return values where the
+        key also has attributes that match `attributes`
+        :param key: A string representing the key to search for in `self.content`
+        :param attributes: A dictionary of strings to strings specifying the attributes and values of those
+        attributes that the target key must have to match.
+        :return: A list containing all of the found values as strings.
+        """
         if attributes is None:
             values = re.findall(r"<" + key + ".*?>(.*?)</" + key + ">", self.content)
             return values
