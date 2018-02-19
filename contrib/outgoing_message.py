@@ -4,14 +4,15 @@ from message import Message
 
 
 def main():
-    pass
-    # TODO: write a test for this class
+    content = "<v>[10,10,0]</v><p>[10.3, 5, 0]</p>"
+    outgoing_message = OutgoingMessage("255.255.255.255", "192.168.1.2", content)
+    print("Outgoing message: " + str(outgoing_message))
 
 
 class OutgoingMessage(Message):
     def __init__(self, addr_to, addr_from, content, timestamp=True, sign=True):
-        super(content)
-        self.content += "<to>" + str(addr_to) + "</to>"
+        super().__init__(content)
+        self.content += "<t>" + str(addr_to) + "</t>"
         if timestamp:
             self.add_timestamp()
         if sign:
@@ -26,10 +27,10 @@ class OutgoingMessage(Message):
                          + "_" + str(timestamp.minute)
                          + "_" + str(timestamp.second)
                          + "_" + str(timestamp.microsecond))
-        self.content += "<time_stamp>" + timestamp_str + "</time_stamp>"
+        self.content += "<ts>" + timestamp_str + "</ts>"
 
     def add_signature(self, signature):
-        self.content += "<from>" + str(signature) + "</from>"
+        self.content += "<f>" + str(signature) + "</f>"
 
 
 if __name__ == "__main__":
