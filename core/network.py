@@ -59,7 +59,8 @@ class Network:
             # TODO: create Message wrapper class from data and append to unreads if there's space for it
         
     def broadcast(self, message):
-        #TODO:  broadcast the passed message to the address 255.255.255.255
+       self.broadcast_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+       self.broadcast_socket.sendto(message("255.255.255.255", 5005))
         pass
 
     def close_broadcast(self):
