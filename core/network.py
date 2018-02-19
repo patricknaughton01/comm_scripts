@@ -2,6 +2,9 @@ import socket
 import multiprocessing, os
 import time
 
+from contrib.incoming_message import IncomingMessage
+from contrib.outgoing_message import OutgoingMessage
+
 
 def main():
     """ A simple processing example that concurrently runs two delay timed
@@ -9,7 +12,7 @@ def main():
     Used to allow the network to listen while it sends out information.
     
     """
-    processes=[]
+    processes = list()
     processes.append(multiprocessing.Process(name="thread1", target=target, args=(1, 2)))
     processes.append(multiprocessing.Process(name="thread2", target=target, args=(2, 3)))
     print("Parent process id: " + str(os.getpid()))
@@ -56,29 +59,39 @@ class Network:
     def update_messages(self):
         while True:
             data, addr = self.listen_socket.recvfrom(self.max_packet_length)
-            # TODO: create Message wrapper class from data and append to unreads if there's space for it
+            incoming_message = IncomingMessage(data)
+            if self.signature != str(addr) and len(self.unreads) < self.buffer_size:    # if we have space and the
+                                                                                        # message isn't from ourselves
+                self.unreads.append(incoming_message)
         
     def broadcast(self, message):
-       self.broadcast_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-       self.broadcast_socket.sendto(message("255.255.255.255", 5005))
-        pass
+        if self.broadcast_socket is None:
+            self.broadcast_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            self.broadcast_socket.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
+        outgoing_message = OutgoingMessage("255.255.255.255", self.signature, message)
+        self.broadcast_socket.sendto(outgoing_message.content, (outgoing_message.find_values("f")[0], 5005))
 
     def close_broadcast(self):
-        #TODO: close self.broadcast_socket
-        pass
+        try:
+            self.broadcast_socket.shutdown()
+            self.broadcast_socket.close()
+        except Exception:
+            raise RuntimeWarning("Could not close broadcast_socket")
+        self.broadcast_socket = None
 
     def read(self, num_msgs=1):
-        """
-        Return a list containing the first num_msgs messages from unreads
+        """Return a list containing the first num_msgs messages from unreads
         and move them to logged_messages (moving the oldest messages out of
         logged_messages)
         :param num_msgs: Number of messages to read
         :return: list<Message> containing the oldest unread messages
 
         """
-        r = self.unreads[:num_msgs]
-        self.unreads = self.unreads[len(r):]
-
+        r = self.unreads[:num_msgs]                         # Get num_msgs msgs from unreads
+        self.unreads = self.unreads[len(r):]                # Remove from unreads
+        self.logged_messages = r.extend(
+            self.logged_messages[:self.buffer_size-len(r)]) # Add to the logged_messages
+        return r
 
 
 if __name__ == "__main__":
