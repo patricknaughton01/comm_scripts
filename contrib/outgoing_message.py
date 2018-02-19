@@ -9,14 +9,13 @@ def main():
 
 
 class OutgoingMessage(Message):
-    def __init__(self, addr_to, addr_from, content, timestamp=False, sign=False):
+    def __init__(self, addr_to, addr_from, content, timestamp=True, sign=True):
         super(content)
         self.content += "<to>" + str(addr_to) + "</to>"
-        self.content += "<from>" + str(addr_from) + "</from>"
         if timestamp:
             self.add_timestamp()
         if sign:
-            self.add_signature()
+            self.add_signature(addr_from)
 
     def add_timestamp(self):
         timestamp = datetime.datetime.now()
@@ -28,6 +27,9 @@ class OutgoingMessage(Message):
                          + "_" + str(timestamp.second)
                          + "_" + str(timestamp.microsecond))
         self.content += "<time_stamp>" + timestamp_str + "</time_stamp>"
+
+    def add_signature(self, signature):
+        self.content += "<from>" + str(signature) + "</from>"
 
 
 if __name__ == "__main__":
