@@ -19,6 +19,7 @@ def main():
     print("Incoming message: " + str(my_incoming_message))
     print("Was broadcast: " + str(my_incoming_message.was_broadcast))
 
+
 class IncomingMessage(Message):
     def __init__(self, content):
         super().__init__(content)
