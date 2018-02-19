@@ -9,7 +9,7 @@ def main():
     Used to allow the network to listen while it sends out information.
     
     """
-    processes=[]
+    processes = list()
     processes.append(multiprocessing.Process(name="thread1", target=target, args=(1, 2)))
     processes.append(multiprocessing.Process(name="thread2", target=target, args=(2, 3)))
     print("Parent process id: " + str(os.getpid()))
@@ -59,12 +59,11 @@ class Network:
             # TODO: create Message wrapper class from data and append to unreads if there's space for it
         
     def broadcast(self, message):
-       self.broadcast_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-       self.broadcast_socket.sendto(message("255.255.255.255", 5005))
-        pass
+        self.broadcast_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self.broadcast_socket.sendto(message.content, ("255.255.255.255", 5005))
 
     def close_broadcast(self):
-        #TODO: close self.broadcast_socket
+        # TODO: close self.broadcast_socket
         pass
 
     def read(self, num_msgs=1):
@@ -78,7 +77,6 @@ class Network:
         """
         r = self.unreads[:num_msgs]
         self.unreads = self.unreads[len(r):]
-
 
 
 if __name__ == "__main__":
