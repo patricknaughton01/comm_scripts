@@ -1,6 +1,6 @@
 import datetime
 
-from .message import Message
+from contrib.message import Message
 
 
 def main():
