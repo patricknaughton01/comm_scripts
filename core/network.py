@@ -1,5 +1,6 @@
 import socket
-import multiprocessing, os
+import multiprocessing
+import os
 import time
 
 from contrib.incoming_message import IncomingMessage
@@ -65,6 +66,11 @@ class Network:
                 self.unreads.append(incoming_message)
         
     def broadcast(self, message):
+        """Sends an outgoing message to the IP address 255.255.255.255
+        :param message: The message that is being broadcasted
+        :return: None
+
+        """
         if self.broadcast_socket is None:
             self.broadcast_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
             self.broadcast_socket.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
@@ -72,25 +78,33 @@ class Network:
         self.broadcast_socket.sendto(outgoing_message.content, (outgoing_message.find_values("f")[0], 5005))
 
     def close_broadcast(self):
+        """Stops broadcasting messages and closing the broadcasting socket
+        :return: None
+
+        """
         try:
-            self.broadcast_socket.shutdown()
-            self.broadcast_socket.close()
-        except Exception:
+            self.broadcast_socket.shutdown()                             # stops broadcasting
+            self.broadcast_socket.close()                                # closes the broadcasting socket
+        except Exception:                                                # checks for an exception
             raise RuntimeWarning("Could not close broadcast_socket")
         self.broadcast_socket = None
 
     def read(self, num_msgs=1):
-        """Return a list containing the first num_msgs messages from unreads
-        and move them to logged_messages (moving the oldest messages out of
+        """Return a list containing the first `num_msgs` messages from unreads
+        and move them to `self.logged_messages` (moving the oldest messages out of
         logged_messages)
-        :param num_msgs: Number of messages to read
-        :return: list<Message> containing the oldest unread messages
+        :param num_msgs: an integer representing the number of messages to read
+        :return: list<Message> containing the oldest unread messages, None if num_msgs is not an int
 
         """
-        r = self.unreads[:num_msgs]                         # Get num_msgs msgs from unreads
-        self.unreads = self.unreads[len(r):]                # Remove from unreads
+        try:
+            num_msgs = int(num_msgs)
+        except ValueError:
+            return None
+        r = self.unreads[:num_msgs]                             # Get num_msgs msgs from unreads
+        self.unreads = self.unreads[len(r):]                    # Remove from unreads
         self.logged_messages = r.extend(
-            self.logged_messages[:self.buffer_size-len(r)]) # Add to the logged_messages
+            self.logged_messages[:self.buffer_size-len(r)][:])  # Add to the logged_messages
         return r
 
 
