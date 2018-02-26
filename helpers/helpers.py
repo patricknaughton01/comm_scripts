@@ -1,3 +1,8 @@
+import os
+
+from config import settings
+
+
 def remove_spaces(str):
     r = ""
     for i in range(len(str)):
@@ -31,3 +36,27 @@ def find_last(target, str):
         if str[i] == target:
             return i
     return -1
+
+
+def get_config(file_name):
+    r = {}
+    try:
+        file = open(os.path.join(settings.BASE_DIR, "config/" + file_name), "r")
+    except OSError:
+        return None
+    lines = file.readlines()
+    for line in lines:
+        comment_free_line = remove_comment(line, "#")
+        key_vals = comment_free_line.split(":")
+        if len(key_vals) > 1:
+            r.update({key_vals[0].strip(): key_vals[1].strip()})
+    file.close()
+    return r
+
+
+def remove_comment(line, comment_start):
+    try:
+        ind = line.index(comment_start)
+        return line[:ind]
+    except ValueError:
+        return line

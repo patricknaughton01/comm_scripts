@@ -1,3 +1,5 @@
+import time
+
 from core.network import Network
 
 
@@ -10,26 +12,11 @@ def main():
 
     :return: None
     """
-    with open("config/network.conf", "r") as config_file:
-        lines = config_file.readlines()
-        config_dict = {}
-        # Read the configuration file into config_dict
-        for line in lines:
-            if not line.startswith("#"):    # if the line is not a comment
-                split = line.split(":")
-                try:
-                    config_dict.update({split[0]: split[1]})
-                except IndexError:
-                    pass
-        try:
-            ip = config_dict["ip"]
-        except KeyError:
-            config_file.close()
-            return
-        network = Network(ip, 10, 1024)
-        while True:
-            message = ""
-            network.broadcast(message)
+    network = Network(10, 1024)
+    while True:
+        message = "<token>Token data</token>"
+        network.broadcast(message)
+        time.sleep(2)
 
 
 if __name__ == "__main__":
