@@ -4,13 +4,13 @@ from helpers.helpers import get_attributes, find_last
 
 
 def main():
-    message = Message("<to attribute =' value' attribute2='v\\\'al' attribute3=\"why\">192.168.1.2</to>"
-                      "<to attr =' value'>192.168.1.3</to>"
-                      "<from>192.168.1.3</from>"
-                      "<time_stamp>2018_2_18_0_0_0_0</time_stamp>")
-    attr_example = message.find_values("to", {"attribute": "value", "attribute2": "v\\\'al", "attribute3": "why"})
+    message = Message("<t attribute =' value' attribute2='v\\\'al' attribute3=\"why\">192.168.1.2</t>"
+                      "<t attr =' value'>192.168.1.3</t>"
+                      "<f>192.168.1.3</f>"
+                      "<s>2018_2_18_0_0_0_0</s>")
+    attr_example = message.find_values("t", {"attribute": "value", "attribute2": "v\\\'al", "attribute3": "why"})
     print("Searching with attributes: " + str(attr_example))
-    search_example = message.find_values("to")
+    search_example = message.find_values("t")
     print("Searching without attributes: " + str(search_example))
 
 
