@@ -1,6 +1,6 @@
 import datetime
 
-from .message import Message
+from contrib.message import Message
 
 
 def main():
@@ -27,7 +27,7 @@ class OutgoingMessage(Message):
                          + "_" + str(timestamp.minute)
                          + "_" + str(timestamp.second)
                          + "_" + str(timestamp.microsecond))
-        self.content += "<ts>" + timestamp_str + "</ts>"
+        self.content += "<s>" + timestamp_str + "</s>"
 
     def add_signature(self, signature):
         self.content += "<f>" + str(signature) + "</f>"
