@@ -1,6 +1,6 @@
 import datetime
 
-from .message import Message
+from contrib.message import Message
 
 
 def main():
@@ -19,6 +19,11 @@ class OutgoingMessage(Message):
             self.add_signature(addr_from)
 
     def add_timestamp(self):
+        """
+        Add a timestamp to content, done with the datetime module. The format is
+        year_month_day_hour_minute_second_microsecond
+        :return: None
+        """
         timestamp = datetime.datetime.now()
         timestamp_str = (str(timestamp.year)
                          + "_" + str(timestamp.month)
@@ -27,9 +32,14 @@ class OutgoingMessage(Message):
                          + "_" + str(timestamp.minute)
                          + "_" + str(timestamp.second)
                          + "_" + str(timestamp.microsecond))
-        self.content += "<ts>" + timestamp_str + "</ts>"
+        self.content += "<s>" + timestamp_str + "</s>"
 
     def add_signature(self, signature):
+        """
+        Add the sender network's signature to the message's content
+        :param signature: The sender network's ip address
+        :return: None
+        """
         self.content += "<f>" + str(signature) + "</f>"
 
 
