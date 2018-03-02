@@ -14,7 +14,7 @@ def main():
     """
     network = Network(10, 1024)
     while True:
-        message = "<token>Token data</token>"
+        message = "<token>Token data</token>"               # send token data every 2 seconds
         network.broadcast(message)
         time.sleep(2)
 
