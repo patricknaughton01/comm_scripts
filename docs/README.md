@@ -1,0 +1,1 @@
+This directory contains general documentation for the project. For method/class specific documentation, see the source files.
