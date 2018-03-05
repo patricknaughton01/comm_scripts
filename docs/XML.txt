@@ -1,0 +1,23 @@
+This directory contains information on how to make a message.
+
+A message consists of three parts:
+
+The sender:
+
+    This is where the message is being sent from. The sender is stored as an IP address in between two "<f>".
+
+The receiver:
+
+    This where the message is being sent to. The receiver is stored as an IP address in between two "<t>".
+
+The timestamp:
+
+    This is the time at which the message was sent. The timestamp is formatted as Year_Month_Day_Hour_Min_Sec_MicroSec.
+
+
+
+Some keys are reserved.
+
+    <t>     this indicates the start and finish of the receiver IP address
+    <f>     this indicates the start and finish of the sender IP address
+    <s>     this indicates the start and finish of the timestamp IP address
