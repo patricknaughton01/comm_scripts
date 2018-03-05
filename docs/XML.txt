@@ -18,6 +18,6 @@ The timestamp:
 
 Some keys are reserved.
 
-    <t>     this indicates the start and finish of the sender IP address
-    <f>     this indicates the start and finish of the receiver IP address
+    <t>     this indicates the start and finish of the receiver IP address
+    <f>     this indicates the start and finish of the sender IP address
     <s>     this indicates the start and finish of the timestamp IP address
