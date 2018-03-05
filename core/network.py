@@ -60,7 +60,7 @@ class Network:
                 self.listen_socket = socket.socket(socket.AF_INET, connection_type)
                 self.listen_socket.bind((self.signature, self.port))
                 self.listening_process = multiprocessing.Process(
-                    name="listening_process_"+str(self.signature), target=self.update_messages())
+                    name="listening_process_"+str(self.signature), target=self.update_messages)
                 self.listening_process.start()
             except RuntimeError:
                 raise RuntimeError("Listening socket failed to open")
