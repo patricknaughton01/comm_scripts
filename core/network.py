@@ -115,10 +115,11 @@ class Network:
             num_msgs = int(num_msgs)
         except ValueError:
             return None
-        r = self.unreads[:num_msgs]                             # Get num_msgs msgs from unreads
-        self.unreads = self.unreads[len(r):]                    # Remove from unreads
-        self.logged_messages = r.extend(
-            self.logged_messages[:self.buffer_size-len(r)][:])  # Add to the logged_messages
+        r = self.unreads[:num_msgs]                                 # Get num_msgs msgs from unreads
+        self.unreads = self.unreads[len(r):]                        # Remove from unreads
+        tmp = r[:]
+        tmp.extend(self.logged_messages[:self.buffer_size-len(r)][:])
+        self.logged_messages = tmp
         return r
 
 
