@@ -23,7 +23,7 @@ class Message:
         """
         Initialize the message with content
         :param content: String representing message's content
-
+        :return: None
         """
         self.content = content
 

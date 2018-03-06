@@ -24,6 +24,12 @@ def main():
 
 
 def target(num1, num2):
+    """
+
+    :param num1:
+    :param num2:
+    :return: none
+    """
     for i in range(4):
         print("Executing target: " + str(num1) + " with process: " + str(os.getpid()) +
               "\nWhose parent process is: " + str(os.getppid()))
@@ -33,6 +39,12 @@ def target(num1, num2):
 
 class Network:
     def __init__(self, max_packet_length, buffer_size):
+        """
+
+        :param max_packet_length:
+        :param buffer_size:
+        :return: None
+        """
         config_dict = get_config("network.conf")
         try:
             self.signature = config_dict['ip']
@@ -55,6 +67,15 @@ class Network:
         self.listen_socket = None
         
     def start_listening(self, connection_type):
+        """
+        Command to start listening for incoming messages of a specified type
+        :param connection_type: a constant that's specified in the constant library
+            example:
+                socket.SOCK_DGRAM   - specifies a udp socket
+                socket.SOCK_STREAM  - specifies a tcp socket
+        :return: None
+
+        """
         if self.listen_socket is None:
             try:
                 self.listen_socket = socket.socket(socket.AF_INET, connection_type)
@@ -66,6 +87,11 @@ class Network:
                 raise RuntimeError("Listening socket failed to open")
         
     def stop_listening(self):
+        """
+        Command to stop listening for incoming messages
+        :return: None
+
+        """
         self.listening_process.abort()
         self.listen_socket = None
 

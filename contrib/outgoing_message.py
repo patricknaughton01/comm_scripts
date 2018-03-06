@@ -11,6 +11,15 @@ def main():
 
 class OutgoingMessage(Message):
     def __init__(self, addr_to, addr_from, content, timestamp=True, sign=True):
+        """
+        Initialize the outgoing message with a timestamp, content, and a to and from address
+        :param addr_to:
+        :param addr_from:
+        :param content:
+        :param timestamp:
+        :param sign:
+        :return: None
+        """
         super().__init__(content)
         self.content += "<t>" + str(addr_to) + "</t>"
         if timestamp:
