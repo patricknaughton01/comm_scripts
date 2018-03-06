@@ -1,0 +1,41 @@
+import sys
+
+from tests.travel_time import travel_time_receiver, travel_time_sender
+
+
+def main():
+    if len(sys.argv) == 1 or len(sys.argv) > 2:
+        print_instructions()
+    elif len(sys.argv) == 2:
+        if sys.argv[1] == "test":
+            while True:
+                test_type = input("What kind of test would you like to run ('timing')?\n")
+                if test_type == "timing":
+                    while True:
+                        role = input("Is this machine a sender or receiver (s/r)?\n")
+                        if role.startswith("s") or role.startswith("S"):
+                            print("Running the sender's script... (CTRL-BREAK to halt)")
+                            travel_time_sender.main()
+                            break
+                        elif role.startswith("r") or role.startswith("R"):
+                            print("Running the receiver's script... (CTRL-BREAK to halt)")
+                            travel_time_receiver.main()
+                            break
+                        else:
+                            print("I could not parse that input, " + str(role) + "\nPlease try again.")
+                    break
+                else:
+                    print("That isn't a test I can run")
+        else:
+            print_instructions()
+            sys.exit(1)
+
+
+def print_instructions():
+    print("Usage:\npython manage.py <action>")
+    print("Action can be one of the following:")
+    print("test\tRun a test of the network (for example, a timing test)")
+
+
+if __name__ == "__main__":
+    main()
