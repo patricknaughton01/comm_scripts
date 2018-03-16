@@ -1,12 +1,12 @@
-import os
 import socket
 import multiprocessing
 import os
 import time
+import signal
 
 from contrib.incoming_message import IncomingMessage
 from contrib.outgoing_message import OutgoingMessage
-from helpers.helpers import get_config
+from helpers.helpers import get_config, get_ip
 
 
 def main():
@@ -46,10 +46,9 @@ class Network:
         :return: None
         """
         config_dict = get_config("network.conf")
-        try:
-            self.signature = config_dict['ip']
-        except KeyError:
-            raise RuntimeError("Key 'ip' not in config file")
+        self.signature = get_ip()
+        if self.signature is None:
+            raise RuntimeError("Could not get ip address")
         try:
             self.port = int(config_dict['port'])
         except KeyError:
@@ -81,7 +80,8 @@ class Network:
                 self.listen_socket = socket.socket(socket.AF_INET, connection_type)
                 self.listen_socket.bind((self.signature, self.port))
                 self.listening_process = multiprocessing.Process(
-                    name="listening_process_"+str(self.signature), target=self.update_messages)
+                    name="listening_process_"+str(self.signature)+"d", target=self.update_messages)
+                self.listening_process.daemon = True
                 self.listening_process.start()
             except RuntimeError:
                 raise RuntimeError("Listening socket failed to open")
@@ -92,7 +92,11 @@ class Network:
         :return: None
 
         """
-        self.listening_process.abort()
+        # noinspection PyBroadException
+        try:
+            os.kill(self.listening_process.pid, signal.CTRL_C_EVENT)
+        except Exception:
+            os.kill(self.listening_process.pid, signal.SIGTERM)
         self.listen_socket = None
 
     def update_messages(self):

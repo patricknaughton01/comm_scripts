@@ -1,4 +1,5 @@
 import os
+import socket
 
 from config import settings
 
@@ -60,3 +61,17 @@ def remove_comment(line, comment_start):
         return line[:ind]
     except ValueError:
         return line
+
+
+def get_ip():
+    """
+    A method to get the ip address of this machine. Connects to address
+    8.8.8.8 (Google's public DNS) and then looks at the name of the
+    socket. Returns this as a string.
+    :return: A string representing the ip address of this machine.
+    """
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    sock.connect(("8.8.8.8", 80))
+    ip = sock.getsockname()[0]
+    sock.close()
+    return ip
