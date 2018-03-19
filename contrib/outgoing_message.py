@@ -10,7 +10,7 @@ def main():
 
 
 class OutgoingMessage(Message):
-    def __init__(self, addr_to, addr_from, content, timestamp=True, sign=True):
+    def __init__(self: OutgoingMessage, addr_to: str, addr_from: str, content:str, timestamp=True: bool, sign=True: bool) -> None:
         """
         Initialize the outgoing message with a timestamp, content, and a to and from address
         :param addr_to:
@@ -27,7 +27,7 @@ class OutgoingMessage(Message):
         if sign:
             self.add_signature(addr_from)
 
-    def add_timestamp(self):
+    def add_timestamp(self: OutgoingMessage) -> None:
         """
         Add a timestamp to content, done with the datetime module. The format is
         year_month_day_hour_minute_second_microsecond
@@ -43,7 +43,7 @@ class OutgoingMessage(Message):
                          + "_" + str(timestamp.microsecond))
         self.content += "<s>" + timestamp_str + "</s>"
 
-    def add_signature(self, signature):
+    def add_signature(self: OutgoingMessage, signature: str) -> None:
         """
         Add the sender network's signature to the message's content
         :param signature: The sender network's ip address

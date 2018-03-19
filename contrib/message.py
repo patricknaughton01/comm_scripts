@@ -19,7 +19,7 @@ class Message:
     a network.
 
     """
-    def __init__(self, content):
+    def __init__(self, content: str) -> None:
         """
         Initialize the message with content
         :param content: String representing message's content
@@ -27,7 +27,7 @@ class Message:
         """
         self.content = content
 
-    def find_values(self, key, attributes=None):
+    def find_values(self: message, key: int, attributes=None: bool) -> list
         """
         Find and return values in `self.content` that are wrapped by the key
         `key`. If attributes is specified, only return values where the
@@ -55,7 +55,7 @@ class Message:
                         values.append(key_val[ind+1:])
             return values
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.content
 
 
