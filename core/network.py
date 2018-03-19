@@ -78,7 +78,7 @@ class Network:
         if self.listen_socket is None:
             try:
                 self.listen_socket = socket.socket(socket.AF_INET, connection_type)
-                self.listen_socket.bind((self.signature, self.port))
+                self.listen_socket.bind(("255.255.255.255", self.port))     # Listen for packet from any port
                 self.listening_process = multiprocessing.Process(
                     name="listening_process_"+str(self.signature)+"d", target=self.update_messages)
                 self.listening_process.daemon = True
@@ -102,7 +102,7 @@ class Network:
     def update_messages(self):
         while True:
             data, addr = self.listen_socket.recvfrom(self.max_packet_length)
-            incoming_message = IncomingMessage(data)
+            incoming_message = IncomingMessage(data.decode("utf-8"))                    # Convert bytes to string
             if self.signature != str(addr) and len(self.unreads) < self.buffer_size:    # if we have space and the
                                                                                         # message isn't from ourselves
                 self.unreads.append(incoming_message)
