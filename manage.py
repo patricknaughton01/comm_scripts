@@ -4,6 +4,10 @@ from tests.travel_time import travel_time_receiver, travel_time_sender
 
 
 def main():
+    """
+    Testing method for various methods and functions
+    :return: none
+    """
     if len(sys.argv) == 1 or len(sys.argv) > 2:
         print_instructions()
     elif len(sys.argv) == 2:
