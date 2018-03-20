@@ -57,13 +57,14 @@ class Network:
             raise RuntimeError("'port' could not be read as an int")
         self.max_packet_length = max_packet_length
 
-        self.unreads = []
         self.logged_messages = []
         self.buffer_size = buffer_size
         self.listening_process = None
 
         self.broadcast_socket = None
         self.listen_socket = None
+        self.queue = multiprocessing.Queue(maxsize=self.buffer_size)
+        self.timeout = 0.01                                     # Timeout for Queue requests in seconds
         
     def start_listening(self, connection_type):
         """
@@ -80,7 +81,9 @@ class Network:
                 self.listen_socket = socket.socket(socket.AF_INET, connection_type)
                 self.listen_socket.bind(("255.255.255.255", self.port))     # Listen for packet from any port
                 self.listening_process = multiprocessing.Process(
-                    name="listening_process_"+str(self.signature)+"d", target=self.update_messages)
+                    name="listening_process_"+str(self.signature)+"d",
+                    target=self.update_messages,
+                    args=(self.queue,))
                 self.listening_process.daemon = True
                 self.listening_process.start()
             except RuntimeError:
@@ -99,13 +102,18 @@ class Network:
             os.kill(self.listening_process.pid, signal.SIGTERM)
         self.listen_socket = None
 
-    def update_messages(self):
+    def update_messages(self, queue):
+        """
+        Update the queue to include the latest message
+        :param queue: A multiprocessing.Queue object that is shared between this and its parent process
+        :return: None
+        """
         while True:
             data, addr = self.listen_socket.recvfrom(self.max_packet_length)
-            incoming_message = IncomingMessage(data.decode("utf-8"))                    # Convert bytes to string
-            if self.signature != str(addr) and len(self.unreads) < self.buffer_size:    # if we have space and the
-                                                                                        # message isn't from ourselves
-                self.unreads.append(incoming_message)
+            incoming_message = IncomingMessage(data.decode("utf-8"))            # Convert bytes to string
+            if self.signature != str(addr):                                     # if the message isn't from us
+                queue.put(incoming_message, False)                              # Add message to queue, don't block
+                print(incoming_message)
         
     def broadcast(self, message):
         """Sends an outgoing message to the IP address 255.255.255.255
@@ -120,6 +128,7 @@ class Network:
         outgoing_message = OutgoingMessage(broadcast_addr, self.signature, message)
         self.broadcast_socket.sendto(outgoing_message.content.encode('utf-8'),
                                      (broadcast_addr, self.port))
+        print(outgoing_message)
 
     def close_broadcast(self):
         """Stops broadcasting messages and closing the broadcasting socket
@@ -143,12 +152,15 @@ class Network:
         """
         try:
             num_msgs = int(num_msgs)
+            if num_msgs > self.buffer_size:
+                num_msgs = self.buffer_size
         except ValueError:
             return None
-        r = self.unreads[:num_msgs]                                 # Get num_msgs msgs from unreads
-        self.unreads = self.unreads[len(r):]                        # Remove from unreads
+        r = []
+        for i in range(num_msgs):
+            r.append(self.queue.get(False))             # Extract from the queue without blocking
         tmp = r[:]
-        tmp.extend(self.logged_messages[:self.buffer_size-len(r)][:])
+        tmp.extend(self.logged_messages[:self.buffer_size-len(r)][:])       # Put messages in logged_messages
         self.logged_messages = tmp
         return r
 
