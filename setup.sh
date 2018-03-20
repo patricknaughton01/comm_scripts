@@ -19,4 +19,6 @@ then
     sudo touch "/etc/rc.local"
     sudo printf "#!/bin/sh\niwconfig wlan0 mode ad-hoc channel 11 essid \"bakery\"\n\nexit 0" >> "/etc/rc.local"
     sudo chmod +x /etc/rc.local
+else
+    echo "You must supply exactly 1 argument, the IP address of this device (ex: 192.168.1.2)"
 fi
