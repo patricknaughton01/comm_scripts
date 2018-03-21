@@ -48,6 +48,8 @@ def main():
         except KeyboardInterrupt:               # Allow the user to stop execution with the keyboard.
             network.stop_listening()
             out_file.close()
+    network.stop_listening()
+    out_file.close()
 
 
 if __name__ == "__main__":
