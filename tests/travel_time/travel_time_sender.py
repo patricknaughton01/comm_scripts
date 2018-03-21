@@ -12,7 +12,7 @@ def main():
 
     :return: None
     """
-    network = Network(10, 1024)
+    network = Network(1024, 10)
     while True:
         message = "<token>Token data</token>"               # send token data every 2 seconds
         network.broadcast(message)

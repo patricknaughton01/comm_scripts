@@ -12,7 +12,7 @@ def main():
     :return: None
 
     """
-    network = Network(10, 1024)
+    network = Network(1024, 10)
     network.start_listening(socket.SOCK_DGRAM)
     out_file = open("timing_output.log", "w")
     while True:
