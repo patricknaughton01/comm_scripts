@@ -4,14 +4,14 @@
 # network called 'bakery'.
 if [ $# == 1 ]
 then
-    if [ -e "/etc/network/interfaces" && ! -e "/etc/network/interfaces.commsav" ]
+    if [ -e "/etc/network/interfaces" ] && [ ! -e "/etc/network/interfaces.commsav" ]
     then
         sudo mv "/etc/network/interfaces" "/etc/network/interfaces.commsav"
         sudo printf "Saving /etc/network/interfaces as /etc/network/interfaces.commsav\n"
     fi
     sudo touch "/etc/network/interfaces"
     sudo printf "allow-hotplug wlan0\nauto wlan0\niface wlan0 inet static\n\taddress $1\n\tnetmask 255.255.255.0\n\tgateway 192.168.1.1\n" >> "/etc/network/interfaces"
-    if [ -e "/etc/rc.local" && ! -e "/etc/network/rc.local.commsav" ]
+    if [ -e "/etc/rc.local" ] && [ ! -e "/etc/network/rc.local.commsav" ]
     then
         sudo mv "/etc/rc.local" "/etc/rc.local.commsav"
         sudo printf "Saving /etc/rc.local as /etc/rc.local.commsav\n"
