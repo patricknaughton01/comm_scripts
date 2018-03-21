@@ -15,9 +15,10 @@ def main():
     network = Network(1024, 10)
     network.start_listening(socket.SOCK_DGRAM)
     out_file = open("timing_output.log", "w")
-    while True:
+    start = datetime.datetime.now()
+    while (datetime.datetime.now() - start) < datetime.timedelta(seconds=30):
         try:
-            unreads = network.read(num_msgs=len(network.unreads))               # read out all unread messages
+            unreads = network.read(network.buffer_size)                         # read out all unread messages
             for unread in unreads:
                 # noinspection PyBroadException
                 try:
@@ -47,6 +48,8 @@ def main():
         except KeyboardInterrupt:               # Allow the user to stop execution with the keyboard.
             network.stop_listening()
             out_file.close()
+    network.stop_listening()
+    out_file.close()
 
 
 if __name__ == "__main__":
