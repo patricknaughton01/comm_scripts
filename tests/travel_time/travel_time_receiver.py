@@ -41,6 +41,7 @@ def main():
                         + str(current_time)
                         + ". The time of flight was: "
                         + str(delta_time)
+                        + " seconds"
                         + "\n"
                     )
                 except Exception:                                               # Ignore corrupted messages

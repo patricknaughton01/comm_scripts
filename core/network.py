@@ -3,6 +3,7 @@ import multiprocessing
 import os
 import time
 import signal
+import queue
 
 from contrib.incoming_message import IncomingMessage
 from contrib.outgoing_message import OutgoingMessage
@@ -158,7 +159,10 @@ class Network:
             return None
         r = []
         for i in range(num_msgs):
-            r.append(self.queue.get(False))             # Extract from the queue without blocking
+            try:
+                r.append(self.queue.get(False))             # Extract from the queue without blocking
+            except queue.Empty:                             # pass if queue is empty
+                pass
         tmp = r[:]
         tmp.extend(self.logged_messages[:self.buffer_size-len(r)][:])       # Put messages in logged_messages
         self.logged_messages = tmp
