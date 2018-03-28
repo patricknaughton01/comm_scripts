@@ -25,7 +25,7 @@ Servo steer;
 Servo esc;
 
 int steerPin = 3;
-int escPin = 11;
+int escPin = 10;
 
 int readInt();
 
