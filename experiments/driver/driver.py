@@ -4,16 +4,15 @@ import time
 
 def main():
     ser = serial.Serial(
-        port='',
+        port='/dev/ttyACM0',
         baudrate=9600,
-        bytesize=serial.EIGHTBYTES,
-        timeout=0.5,
     )
     while True:
-        ser.write('s')
-        ser.write(123)
-        time.sleep(1)
-        ser.write(0)
+        ser.write('s'.encode('utf-8'))
+        ser.write('n100'.encode('utf-8'))
+        time.sleep(2)
+        ser.write('n80'.encode('utf-8'))
+        time.sleep(2)
 
 
 if __name__ == "__main__":
