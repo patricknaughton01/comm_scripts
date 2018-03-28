@@ -1,6 +1,7 @@
 import sys
 
 from tests.travel_time import travel_time_receiver, travel_time_sender
+from experiments.driver import driver, reader
 
 
 def main():
@@ -13,7 +14,7 @@ def main():
     elif len(sys.argv) == 2:
         if sys.argv[1] == "test":
             while True:
-                test_type = input("What kind of test would you like to run ('timing')?\n")
+                test_type = input("What kind of test would you like to run ('timing, driving, read')?\n")
                 if test_type == "timing":
                     while True:
                         role = input("Is this machine a sender or receiver (s/r)?\n")
@@ -28,6 +29,10 @@ def main():
                         else:
                             print("I could not parse that input, " + str(role) + "\nPlease try again.")
                     break
+                elif test_type == "driving":
+                    driver.main()
+                elif test_type == "read":
+                    reader.main()
                 else:
                     print("That isn't a test I can run")
         else:
