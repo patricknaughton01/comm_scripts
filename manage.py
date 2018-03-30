@@ -2,6 +2,7 @@ import sys
 
 from tests.travel_time import travel_time_receiver, travel_time_sender
 from experiments.driver import driver, reader
+from experiments.driver.full_test import master, slave
 
 
 def main():
@@ -33,6 +34,17 @@ def main():
                     driver.main()
                 elif test_type == "read":
                     reader.main()
+                elif test_type == "full":
+                    while True:
+                        role = input("Is this machine the master or slave?")
+                        if role.startswith("m"):
+                            master.main()
+                            break
+                        elif role.startswith("s"):
+                            slave.main()
+                            break
+                        else:
+                            print("I could not parse that input")
                 else:
                     print("That isn't a test I can run")
         else:
