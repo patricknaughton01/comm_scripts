@@ -23,12 +23,12 @@ void setup(){
 }
 
 void loop(){
-  int escCommand = map(pulseIn(i, HIGH), 1901, 959, 1000, 2000);
-  int steerCommand = map(pulseIn(i, HIGH), 1220, 1490, 1000, 2000);
+  int escCommand = map(pulseIn(escIn, HIGH), 1901, 959, 1000, 2000);
+  int steerCommand = map(pulseIn(steerIn, HIGH), 1220, 1490, 1000, 2000);
   esc.writeMicroseconds(escCommand);
   steer.writeMicroseconds(steerCommand);
-  Serial.print("e");
-  Serial.println(escCommand);
-  Serial.print("s");
+  Serial.print(escCommand);
+  Serial.print(".");
   Serial.println(steerCommand);
+  delay(30);
 }

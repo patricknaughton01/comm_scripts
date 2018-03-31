@@ -3,7 +3,7 @@ import multiprocessing
 import os
 import time
 import signal
-import queue
+import queue as Queue
 
 from contrib.incoming_message import IncomingMessage
 from contrib.outgoing_message import OutgoingMessage
@@ -113,8 +113,11 @@ class Network:
             data, addr = self.listen_socket.recvfrom(self.max_packet_length)
             incoming_message = IncomingMessage(data.decode("utf-8"))            # Convert bytes to string
             if self.signature != str(addr):                                     # if the message isn't from us
-                queue.put(incoming_message, False)                              # Add message to queue, don't block
-                print(incoming_message)
+                try:
+                    queue.put(incoming_message, False)                              # Add message to queue, don't block
+                    print(incoming_message)
+                except Queue.Full:
+                    pass
         
     def broadcast(self, message):
         """Sends an outgoing message to the IP address 255.255.255.255
@@ -161,7 +164,7 @@ class Network:
         for i in range(num_msgs):
             try:
                 r.append(self.queue.get(False))             # Extract from the queue without blocking
-            except queue.Empty:                             # pass if queue is empty
+            except Queue.Empty:                             # pass if queue is empty
                 pass
         tmp = r[:]
         tmp.extend(self.logged_messages[:self.buffer_size-len(r)][:])       # Put messages in logged_messages

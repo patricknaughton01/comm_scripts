@@ -9,8 +9,8 @@ State state = recvSteering;
 Servo steer;
 Servo esc;
 
-int steerPin = 3;
-int escPin = 5;
+int steerPin = 9;//3;
+int escPin = 10;//5;
 
 void setup(){
   Serial.begin(9600);
@@ -19,13 +19,8 @@ void setup(){
 
   steer.attach(steerPin);
   esc.attach(escPin);
+  
 
-  // Calibrate the esc
-  esc.writeMicroseconds(2000);
-  delay(3000);
-  esc.writeMicroseconds(1000);
-  delay(3000);
-  esc.writeMicroseconds(1500);
 }
 
 void loop(){
@@ -43,12 +38,10 @@ void loop(){
       case recvSteering: 
         x = Serial.parseInt();
         steer.write(x);
-        Serial.println(x);
         break;
       case recvEsc: 
         x = Serial.parseInt();
         esc.writeMicroseconds(x);
-        Serial.println(x);
         break;
       default: 
         break;

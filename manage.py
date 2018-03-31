@@ -15,7 +15,7 @@ def main():
     elif len(sys.argv) == 2:
         if sys.argv[1] == "test":
             while True:
-                test_type = input("What kind of test would you like to run ('timing, driving, read')?\n")
+                test_type = input("What kind of test would you like to run ('timing', 'driving', 'read', 'full')?\n")
                 if test_type == "timing":
                     while True:
                         role = input("Is this machine a sender or receiver (s/r)?\n")
@@ -36,7 +36,7 @@ def main():
                     reader.main()
                 elif test_type == "full":
                     while True:
-                        role = input("Is this machine the master or slave?")
+                        role = input("Is this machine the master or slave?\n")
                         if role.startswith("m"):
                             master.main()
                             break

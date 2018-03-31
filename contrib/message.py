@@ -38,7 +38,7 @@ class Message:
         :return: A list containing all of the found values as strings.
         """
         if attributes is None:
-            values = re.findall(r"<" + key + ".*?>(.*?)</" + key + ">", self.content)
+            values = re.findall(r"<" + key + ".*?>(.*?)</" + key + ">", self.content, re.DOTALL)
             return values
         else:
             values = []

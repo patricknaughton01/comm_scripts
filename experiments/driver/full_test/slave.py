@@ -8,18 +8,20 @@ def main():
     ser = serial.Serial(
         port="/dev/ttyACM0",
         baudrate=9600,
-        timeout=0,
     )
     network = Network(1024, 10)
     network.start_listening(socket.SOCK_DGRAM)
     try:
         while True:
-            incoming_command = network.read().findValues("<command>")[0]
-            if incoming_command.startswith("s"):
-                ser.write(b's')
-            elif incoming_command.startswith("e"):
-                ser.write(b'e')
-            ser.write(("n" + incoming_command[1:]).encode('utf-8'))
+            incoming_command = network.read(network.buffer_size)
+            if len(incoming_command) > 0:
+                incoming_command = incoming_command[0].find_values("command")
+                if len(incoming_command) > 0:
+                    tmp = incoming_command.split(".")
+                    esc = tmp[0].strip()
+                    steer = tmp[1].strip()
+                    ser.write(("e\n" + esc + "\n").encode('utf-8'))
+                    ser.write(("s\n" + steer + "\n").encode('utf-8'))
     except KeyboardInterrupt:
         network.stop_listening()
 
