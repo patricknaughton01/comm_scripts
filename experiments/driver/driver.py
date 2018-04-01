@@ -8,10 +8,10 @@ def main():
         baudrate=9600,
     )
     while True:
-        ser.write('s'.encode('utf-8'))
-        ser.write('n1600'.encode('utf-8'))
+        ser.write('e'.encode('utf-8'))
+        ser.write('n1600l'.encode('utf-8'))
         time.sleep(2)
-        ser.write('n1400'.encode('utf-8'))
+        ser.write('n1400l'.encode('utf-8'))
         time.sleep(2)
 
 
