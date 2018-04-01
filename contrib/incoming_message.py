@@ -24,17 +24,17 @@ def main():
 
 
 class IncomingMessage(Message):
-    def __init__(self: IncomingMessage, content: str) -> None:
+    def __init__(self, content):
         super().__init__(content)
         self.was_broadcast = self.was_broadcast()
 
-    def was_broadcast(self: IncomingMessage) -> bool:
+    def was_broadcast(self):
         """A method to determine whether or not the this message was broadcast
         :return: A boolean representing whether the message was broadcast
         """
         return len(self.find_values("t")) == 0 or self.find_values("t")[0][0:3] == "255"
 
-    def directed_at_addr(self: IncomingMessage, addr: str) -> boolean:
+    def directed_at_addr(self, addr):
         """A method to determine if the message was directed at the target `addr`
         :param addr: The target address to check
         :return: A boolean representing whether the message was targeted at `addr`
