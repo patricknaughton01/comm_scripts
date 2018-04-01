@@ -9,9 +9,9 @@ def main():
     )
     while True:
         ser.write('s'.encode('utf-8'))
-        ser.write('n100'.encode('utf-8'))
+        ser.write('n1600'.encode('utf-8'))
         time.sleep(2)
-        ser.write('n80'.encode('utf-8'))
+        ser.write('n1400'.encode('utf-8'))
         time.sleep(2)
 
 
