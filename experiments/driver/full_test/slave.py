@@ -20,8 +20,8 @@ def main():
                     tmp = incoming_command.split(".")
                     esc = tmp[0].strip()
                     steer = tmp[1].strip()
-                    ser.write(("e\n" + esc + "\n").encode('utf-8'))
-                    ser.write(("s\n" + steer + "\n").encode('utf-8'))
+                    ser.write(("e\n" + esc + "l\n").encode('utf-8'))
+                    ser.write(("s\n" + steer + "l\n").encode('utf-8'))
     except KeyboardInterrupt:
         network.stop_listening()
 
