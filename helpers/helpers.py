@@ -5,11 +5,6 @@ from config import settings
 
 
 def remove_spaces(str):
-    """
-    Removes spaces from given string
-    :param str: message which needs spaces removed
-    :return: original string without spaces
-    """
     r = ""
     for i in range(len(str)):
         if not str[i].isspace():
@@ -18,11 +13,6 @@ def remove_spaces(str):
 
 
 def get_attributes(str):
-    """
-    Finds the
-    :param str:
-    :return: a list of attributes and their values
-    """
     str = remove_spaces(str)
     attr_vals = {}
     markers = []
@@ -66,12 +56,6 @@ def get_config(file_name):
 
 
 def remove_comment(line, comment_start):
-    """
-    Removes all comments on a given line of code
-    :param line: line which needs comments removed
-    :param comment_start: point in the line where the comments begin
-    :return: original line with the comments removed
-    """
     try:
         ind = line.index(comment_start)
         return line[:ind]
