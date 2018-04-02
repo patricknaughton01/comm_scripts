@@ -20,6 +20,9 @@ void setup(){
   
   steer.attach(steerOut);
   esc.attach(escOut);
+  //steer.writeMicroseconds(1500);
+  //esc.writeMicroseconds(1500);
+  delay(5);
 }
 
 void loop(){

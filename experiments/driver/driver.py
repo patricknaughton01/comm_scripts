@@ -8,13 +8,10 @@ def main():
         baudrate=9600,
     )
     while True:
-        ser.write('e'.encode('utf-8'))
-        ser.write('n1600t'.encode('utf-8'))
-        time.sleep(2)
-        ser.write('n1400t'.encode('utf-8'))
-        time.sleep(2)
-        ser.write('n1500t'.encode('utf-8'))
-        time.sleep(2)
+        ser.write('e1500s1500'.encode('utf-8'))
+        time.sleep(10)
+        ser.write('e1700s1700'.encode('utf-8'))
+        time.sleep(10)
 
 
 if __name__ == "__main__":

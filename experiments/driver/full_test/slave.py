@@ -1,5 +1,6 @@
 import serial
 import socket
+import time
 
 from core.network import Network
 
@@ -20,8 +21,8 @@ def main():
                     tmp = incoming_command.split(".")
                     esc = tmp[0].strip()
                     steer = tmp[1].strip()
-                    ser.write(("e\nn" + esc + "t\n").encode('utf-8'))
-                    ser.write(("s\nn" + steer + "t\n").encode('utf-8'))
+                    ser.write(("e" + esc + "s" + steer).encode('utf-8'))
+                    time.sleep(0.01)
     except KeyboardInterrupt:
         network.stop_listening()
 

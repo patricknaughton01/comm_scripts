@@ -1,16 +1,13 @@
 #include <Servo.h>
 
-enum State{
-  recvSteering,
-  recvEsc
-};
-State state = recvSteering;
-
 Servo steer;
 Servo esc;
 
 int steerPin = 9;//3;
 int escPin = 10;//5;
+
+const int danger = 500;
+int lastCommand = 0;
 
 void setup(){
   Serial.begin(9600);
@@ -25,27 +22,16 @@ void setup(){
 
 void loop(){
   if(Serial.available()){
-    switch((char)Serial.read()){
-    case 's': 
-      state = recvSteering;
-      break;
-    case 'e': 
-      state = recvEsc;
-      break;
-    default: 
-      switch(state){
-        int x;
-      case recvSteering: 
-        x = Serial.parseInt();
-        steer.write(x);
-        break;
-      case recvEsc: 
-        x = Serial.parseInt();
-        esc.writeMicroseconds(x);
-        break;
-      default: 
-        break;
-      }
-    } 
+    if(Serial.read()=='e'){
+      esc.writeMicroseconds(Serial.parseInt());
+    }else{
+      steer.writeMicroseconds(Serial.parseInt());
+    }
+    lastCommand = millis();
+  }else{
+    if((millis()-lastCommand) > danger){
+      esc.writeMicroseconds(1500);
+      steer.writeMicroseconds(1500);
+    }
   }
 }
