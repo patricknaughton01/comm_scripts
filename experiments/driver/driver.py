@@ -13,6 +13,8 @@ def main():
         time.sleep(2)
         ser.write('n1400t'.encode('utf-8'))
         time.sleep(2)
+        ser.write('n1500t'.encode('utf-8'))
+        time.sleep(2)
 
 
 if __name__ == "__main__":
