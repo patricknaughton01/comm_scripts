@@ -42,8 +42,8 @@ class Network:
     def __init__(self, max_packet_length, buffer_size):
         """
 
-        :param max_packet_length:
-        :param buffer_size:
+        :param max_packet_length: The max int of bytes the network can grab at a given time
+        :param buffer_size: The max int of incoming_messages the to_read and the logged messages buffers can hold
         :return: None
         """
         config_dict = get_config("network.conf")
@@ -85,7 +85,7 @@ class Network:
                     name="listening_process_"+str(self.signature)+"d",
                     target=self.update_messages,
                     args=(self.queue,))
-                self.listening_process.daemon = True
+                self.listening_process.daemon = True     #causes listening_process to stop if start_listening shutsdown
                 self.listening_process.start()
             except RuntimeError:
                 raise RuntimeError("Listening socket failed to open")
