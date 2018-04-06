@@ -4,7 +4,7 @@ data a message contains, the `Message` class also implements the
 `find_values()` method that will return a list of all the values that are
 wrapped by the key that is passed in.
     Ex:
-        >>> msg = Message("<x>Hello World!</x><x>How are you?</x>"
+        >>> msg = Message("<x>Hello World!</x><x>How are you?</x>")
         >>> find_x = msg.find_values('x')
 
         find_x = ['Hello World!', 'How are you?']
