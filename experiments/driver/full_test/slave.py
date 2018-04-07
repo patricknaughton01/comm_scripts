@@ -22,7 +22,7 @@ def main():
             if len(incoming_command) > 0:
                 incoming_command = incoming_command[0].find_values("command")
                 if len(incoming_command) > 0:
-                    tmp = incoming_command.split(".")
+                    tmp = incoming_command[0].split(".")
                     esc = tmp[0].strip()
                     steer = tmp[1].strip()
                     ser.write(("e" + esc + "s" + steer).encode('utf-8'))
