@@ -47,6 +47,10 @@ def main():
                             print("I could not parse that input")
                 else:
                     print("That isn't a test I can run")
+        elif sys.argv[1] == "master":
+            master.main()
+        elif sys.argv[1] == "slave":
+            slave.main()
         else:
             print_instructions()
             sys.exit(1)
