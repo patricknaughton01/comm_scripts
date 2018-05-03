@@ -13,11 +13,11 @@ class OutgoingMessage(Message):
     def __init__(self, addr_to, addr_from, content, timestamp=True, sign=True):
         """
         Initialize the outgoing message with a timestamp, content, and a to and from address
-        :param addr_to:
-        :param addr_from:
-        :param content:
-        :param timestamp:
-        :param sign:
+        :param addr_to: Address this message should be sent to
+        :param addr_from: Address this message comes from
+        :param content: A (XML) string representing the content of the message
+        :param timestamp: Should this message be timestamped?
+        :param sign: Should this message be signed?
         :return: None
         """
         super().__init__(content)
