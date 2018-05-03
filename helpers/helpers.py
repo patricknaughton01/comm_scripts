@@ -1,3 +1,6 @@
+"""This file contains general utility methods that don't belong under a specific
+class.
+"""
 import os
 import socket
 
@@ -5,6 +8,8 @@ from config import settings
 
 
 def remove_spaces(str):
+    """Helper method to remove all spaces from str.
+    """
     r = ""
     for i in range(len(str)):
         if not str[i].isspace():
@@ -13,6 +18,8 @@ def remove_spaces(str):
 
 
 def get_attributes(str):
+    """Get the attributes of an XML string. Return this as a dictionary from attribute to value
+    """
     str = remove_spaces(str)
     attr_vals = {}
     markers = []
@@ -33,6 +40,8 @@ def get_attributes(str):
 
 
 def find_last(target, str):
+    """Find the last occurance of the character `target` in `str`
+    """
     for i in range(len(str)-1, -1, -1):
         if str[i] == target:
             return i
@@ -40,6 +49,9 @@ def find_last(target, str):
 
 
 def get_config(file_name):
+    """Read the info from a config file with file name `file_name`. This is used to 
+    configure the Network object.
+    """
     r = {}
     try:
         file = open(os.path.join(settings.BASE_DIR, "config/" + file_name), "r")
@@ -56,6 +68,9 @@ def get_config(file_name):
 
 
 def remove_comment(line, comment_start):
+    """Remove all comments from line `line` where the `comment_start`
+    character indicates the beginning of a comment.
+    """
     try:
         ind = line.index(comment_start)
         return line[:ind]
@@ -64,8 +79,7 @@ def remove_comment(line, comment_start):
 
 
 def get_ip():
-    """
-    A method to get the ip address of this machine. Connects to address
+    """A method to get the ip address of this machine. Connects to address
     8.8.8.8 (Google's public DNS) and then looks at the name of the
     socket. Returns this as a string.
     :return: A string representing the ip address of this machine.
