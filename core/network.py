@@ -25,11 +25,10 @@ def main():
 
 
 def target(num1, num2):
-    """
-
-    :param num1:
-    :param num2:
-    :return: none
+    """Token function that prints out num1 at intervals of num2 seconds.
+    :param num1: Number to print
+    :param num2: Time to sleep between prints (seconds)
+    :return: None
     """
     for i in range(4):
         print("Executing target: " + str(num1) + " with process: " + str(os.getpid()) +
@@ -40,13 +39,14 @@ def target(num1, num2):
 
 class Network:
     def __init__(self, max_packet_length, buffer_size):
-        """
-
-        :param max_packet_length:
-        :param buffer_size:
+        """Initialize the network object
+        :param max_packet_length: The maximum number of bytes that can be read at once.
+        :param buffer_size: The number of unread and logged_messages to keep (each)
         :return: None
         """
+        # Read from "network.conf" to get this network's port
         config_dict = get_config("network.conf")
+        # Read the ip address of this Pi
         self.signature = get_ip()
         if self.signature is None:
             raise RuntimeError("Could not get ip address")
@@ -64,6 +64,7 @@ class Network:
 
         self.broadcast_socket = None
         self.listen_socket = None
+        # A multiprocessing Queue is necessary to communicate between processes
         self.queue = multiprocessing.Queue(maxsize=self.buffer_size)
         self.timeout = 0.01                                     # Timeout for Queue requests in seconds
         
@@ -72,8 +73,8 @@ class Network:
         Command to start listening for incoming messages of a specified type
         :param connection_type: a constant that's specified in the constant library
             example:
-                socket.SOCK_DGRAM   - specifies a udp socket
-                socket.SOCK_STREAM  - specifies a tcp socket
+                socket.SOCK_DGRAM   - specifies a UDP socket
+                socket.SOCK_STREAM  - specifies a TCP socket
         :return: None
 
         """
